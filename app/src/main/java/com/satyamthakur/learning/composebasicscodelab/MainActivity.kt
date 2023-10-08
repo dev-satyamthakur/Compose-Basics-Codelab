@@ -1,13 +1,18 @@
 package com.satyamthakur.learning.composebasicscodelab
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,15 +30,39 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeBasicsCodelabTheme {
-                OnboardingScreen()
+                MyApp()
             }
         }
     }
 }
 
 @Composable
-fun OnboardingScreen(modifier: Modifier = Modifier) {
-    // TODO: This state should be hoisted
+fun MyApp(modifier: Modifier = Modifier) {
+
+    var shouldShowOnboarding by remember { mutableStateOf(true) }
+
+    Surface(modifier) {
+        if (shouldShowOnboarding) {
+            OnboardingScreen(onContinueClicked = { shouldShowOnboarding = false })
+        } else {
+            Greetings()
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MyAppPreview() {
+    ComposeBasicsCodelabTheme {
+        MyApp(Modifier.fillMaxSize())
+    }
+}
+
+@Composable
+fun OnboardingScreen(
+    onContinueClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     var shouldShowOnboarding by remember { mutableStateOf(true) }
 
     Column(
@@ -44,10 +73,62 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
         Text("Welcome to the Basics Codelab!")
         Button(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { shouldShowOnboarding = false }
+            onClick = onContinueClicked
         ) {
             Text("Continue")
         }
+    }
+}
+
+@Composable
+private fun Greetings(
+    modifier: Modifier = Modifier,
+    names: List<String> = listOf("World", "Compose")
+) {
+    Column(modifier = modifier.padding(vertical = 4.dp)) {
+        for (name in names) {
+            Greeting(name = name)
+        }
+    }
+}
+
+
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+private fun GreetingsPreview() {
+    ComposeBasicsCodelabTheme {
+        Greetings()
+    }
+}
+
+@Composable
+fun Greeting(name: String) {
+    val expanded = remember { mutableStateOf(false) }
+    val extraPadding = if (expanded.value) 48.dp else 0.dp
+    Surface(
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+    ) {
+        Row(modifier = Modifier.padding(24.dp)) {
+            Column(
+                modifier = Modifier.weight(1f)
+                    .padding(bottom = extraPadding)
+            ) {
+                Text(
+                    text = "Hello,"
+                )
+                Text(
+                    text = "$name!"
+                )
+            }
+            ElevatedButton(
+                onClick = { expanded.value = !expanded.value }
+            ) {
+                Text(if (expanded.value) "Show less" else "Show More")
+                Log.d("MYAPP", "Sample Log")
+            }
+        }
+
     }
 }
 
@@ -55,6 +136,6 @@ fun OnboardingScreen(modifier: Modifier = Modifier) {
 @Composable
 fun OnboardingPreview() {
     ComposeBasicsCodelabTheme {
-        OnboardingScreen()
+        MyApp()
     }
 }
