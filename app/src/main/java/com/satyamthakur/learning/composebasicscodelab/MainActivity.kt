@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.text.font.FontWeight
 import com.satyamthakur.learning.composebasicscodelab.ui.theme.ComposeBasicsCodelabTheme
 
 class MainActivity : ComponentActivity() {
@@ -128,13 +129,16 @@ fun Greeting(name: String) {
         Row(modifier = Modifier.padding(24.dp)) {
             Column(
                 modifier = Modifier.weight(1f)
-                    .padding(bottom = extraPadding)
+                    .padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(
                     text = "Hello,"
                 )
                 Text(
-                    text = "$name!"
+                    text = "$name!",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
                 )
             }
             ElevatedButton(
