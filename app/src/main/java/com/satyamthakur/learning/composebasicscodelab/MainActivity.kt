@@ -1,5 +1,6 @@
 package com.satyamthakur.learning.composebasicscodelab
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -62,6 +63,21 @@ fun MyApp(modifier: Modifier = Modifier) {
 fun MyAppPreview() {
     ComposeBasicsCodelabTheme {
         MyApp(Modifier.fillMaxSize())
+    }
+}
+
+
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "Dark"
+)
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+fun DefaultPreview() {
+    ComposeBasicsCodelabTheme {
+        Greetings()
     }
 }
 
